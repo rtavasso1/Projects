@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tabular Classification | Riley Tavassoli</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Tabular Classification" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The train and test datasets contain parameters of different types of sponges. Because of there being no overlap in types of sponges between the training and testing data, we must use the training data to build an intuition about the unseen products in the testing data." />
+<meta property="og:description" content="The train and test datasets contain parameters of different types of sponges. Because of there being no overlap in types of sponges between the training and testing data, we must use the training data to build an intuition about the unseen products in the testing data." />
+<link rel="canonical" href="https://rtavasso1.github.io/Kaggle/fastpages/jupyter/2022/08/30/Tabular-Classification.html" />
+<meta property="og:url" content="https://rtavasso1.github.io/Kaggle/fastpages/jupyter/2022/08/30/Tabular-Classification.html" />
+<meta property="og:site_name" content="Riley Tavassoli" />
+<meta property="og:image" content="https://rtavasso1.github.io/Kaggle/images/some_folder/your_image.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-30T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://rtavasso1.github.io/Kaggle/images/some_folder/your_image.png" />
+<meta property="twitter:title" content="Tabular Classification" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-30T00:00:00-05:00","datePublished":"2022-08-30T00:00:00-05:00","description":"The train and test datasets contain parameters of different types of sponges. Because of there being no overlap in types of sponges between the training and testing data, we must use the training data to build an intuition about the unseen products in the testing data.","headline":"Tabular Classification","image":"https://rtavasso1.github.io/Kaggle/images/some_folder/your_image.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://rtavasso1.github.io/Kaggle/fastpages/jupyter/2022/08/30/Tabular-Classification.html"},"url":"https://rtavasso1.github.io/Kaggle/fastpages/jupyter/2022/08/30/Tabular-Classification.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/Kaggle/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://rtavasso1.github.io/Kaggle/feed.xml" title="Riley Tavassoli" /><link rel="shortcut icon" type="image/x-icon" href="/Kaggle/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/Kaggle/">Riley Tavassoli</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/Kaggle/about/">About Me</a><a class="page-link" href="/Kaggle/search/">Search</a><a class="page-link" href="/Kaggle/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tabular Classification</h1><p class="page-description">The train and test datasets contain parameters of different types of sponges. Because of there being no overlap in types of sponges between the training and testing data, we must use the training data to build an intuition about the unseen products in the testing data.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-08-30T00:00:00-05:00" itemprop="datePublished">
+        Aug 30, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/Kaggle/categories/#fastpages">fastpages</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/Kaggle/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/rtavasso1/Kaggle/tree/master/_notebooks/2022-08-30-Tabular-Classification.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/Kaggle/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-08-30-Tabular-Classification.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us do a z-test to determine the p-value for features with missing values having a significantly different failure rate than the mean failure rate.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p><div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">xbar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span> <span class="c1"># Average failure rate for all samples</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">train_df</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">train_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span><span class="mi">1</span><span class="p">)</span> 
+        <span class="n">fail</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">train_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fail</span> <span class="o">-</span> <span class="n">xbar</span><span class="o">*</span><span class="n">total</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">total</span><span class="o">*</span><span class="n">xbar</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">xbar</span><span class="p">))</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+</p>
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;measurement_3&#39;: -2.3081239192358893, &#39;measurement_7&#39;: -0.6168090614020341, &#39;loading&#39;: -0.5884139027237291, &#39;measurement_8&#39;: -0.2608394720852192, &#39;measurement_6&#39;: -0.2487830493916941, &#39;measurement_10&#39;: -0.23930183936832636, &#39;measurement_13&#39;: -0.232157095534432, &#39;measurement_11&#39;: 0.010588023134326956, &#39;measurement_14&#39;: 0.02636051305111207, &#39;measurement_16&#39;: 0.12573203265182414, &#39;measurement_17&#39;: 0.19615458574582673, &#39;measurement_15&#39;: 0.4239675552974366, &#39;measurement_12&#39;: 0.9470533855070152, &#39;measurement_9&#39;: 1.5441310229399012, &#39;measurement_4&#39;: 1.8461213130860923, &#39;measurement_5&#39;: 2.408654616260529}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our sample consists of all items with missing value, and out of that sample, we want to see what percent fail. If that percent is more or less than 1.96 standard deviations from the population failure rate, we say that the measurement being missing is statistically significant in predicting the failure of the part. In this case, a z score of +-1.96 occurs for features measurement_3 and measurement_5. We then can create new features that take on boolean values of whether measurement 3 and 5 are missing.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So now we have established a baseline accuracy with all problematic columns removed and no preprocessing. What if we do some work? First let us ask ourselves how we should evaluate our model. Is accuracy enough or can we get better instead from AUROC/AUPRC? If so, which to choose? Let's first evaulate the distribution of classes</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">percentFailTrain</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train Fail Percent: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">percentFailTrain</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">percentFailTrain</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Val Fail Percent: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">percentFailTrain</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Train: 0.21317810006523813
+Val: 0.21089869035074515
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see that there is approximately a 4:1 distribution of classes in the dataset, which is unbalanced enough to warrant the use the PR curve, since the AUROC is biased when used for unbalanced datasets. Let's first process our raw data by imputing missing values, adding new features, and encoding categorical variables.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;train.csv&#39;</span><span class="p">)</span> <span class="c1"># 26570 rows</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;test.csv&#39;</span><span class="p">)</span> <span class="c1"># 20775 rows</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;failure&#39;</span><span class="p">)</span>
+
+<span class="c1">#Combine train and test for preprocess</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">train_df</span><span class="p">,</span><span class="n">test_df</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#Imput missing values with KNN trained on train_df</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">KNNImputer</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="s1">&#39;loading&#39;</span> <span class="ow">or</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;measurement&#39;</span><span class="p">)]</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+<span class="n">combined</span><span class="p">[</span><span class="n">features</span><span class="p">]</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">combined</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+
+<span class="c1"># Engineer features</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="s1">&#39;attribute_2&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">combined</span><span class="p">[</span><span class="s1">&#39;attribute_3&#39;</span><span class="p">]</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;attribute_2&#39;</span><span class="p">)</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;attribute_3&#39;</span><span class="p">)</span>
+<span class="n">materialCombinations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">),</span><span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;attribute_0&#39;</span><span class="p">,</span><span class="s1">&#39;attribute_1&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)):</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mat</span> <span class="o">==</span> <span class="s1">&#39;material_5&#39;</span><span class="p">:</span>
+            <span class="n">materialCombinations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">mat</span> <span class="o">==</span><span class="s1">&#39;material_6&#39;</span><span class="p">:</span>
+            <span class="n">materialCombinations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">mat</span> <span class="o">==</span> <span class="s1">&#39;material_7&#39;</span><span class="p">:</span>
+            <span class="n">materialCombinations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">mat</span> <span class="o">==</span> <span class="s1">&#39;material_8&#39;</span><span class="p">:</span>
+            <span class="n">materialCombinations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;attribute_0&#39;</span><span class="p">)</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;attribute_1&#39;</span><span class="p">)</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;mat5&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">materialCombinations</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;mat6&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">materialCombinations</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;mat7&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">materialCombinations</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;mat8&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">materialCombinations</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Add column for if loading is less than average of product code</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;product_code&#39;</span><span class="p">)[</span><span class="s1">&#39;loading&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">bools</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">code</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">product_code</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">loading</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="n">means</span><span class="p">[</span><span class="n">code</span><span class="p">]:</span>
+        <span class="n">bools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">combined</span><span class="p">[</span><span class="s1">&#39;pomAvg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bools</span>
+
+<span class="c1"># Split back</span>
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">26570</span><span class="p">]</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">26570</span><span class="p">:]</span>
+
+<span class="c1"># Bin numerical cols</span>
+<span class="n">est</span> <span class="o">=</span> <span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_df</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;measurement&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;measurement_17&#39;</span><span class="p">]]</span>
+<span class="n">est</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+<span class="n">train_df</span><span class="p">[</span><span class="n">features</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+<span class="n">test_df</span><span class="p">[</span><span class="n">features</span><span class="p">]</span> <span class="o">=</span> <span class="n">est</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_df</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+
+
+<span class="c1"># Remove id column since it does not need to go in the model</span>
+<span class="n">train_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="n">test_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+
+<span class="c1"># Remove unimportant columns</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_df</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;attribute&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;measurement_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">)]]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+    <span class="n">train_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">test_df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have processed our data, we can train a model, tracking statistics telling us our model's ability.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p><div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg_acc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">avg_auroc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">avg_auprc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">avg_f1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;eta&#39;</span><span class="p">:</span><span class="mf">0.015</span><span class="p">,</span> <span class="s1">&#39;objective&#39;</span><span class="p">:</span><span class="s1">&#39;binary:logistic&#39;</span><span class="p">,</span><span class="s1">&#39;eval_metric&#39;</span><span class="p">:</span><span class="s1">&#39;auc&#39;</span><span class="p">,</span><span class="s1">&#39;gamma&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}</span>
+<span class="n">num_round</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="s1">&#39;product_code&#39;</span><span class="p">]</span> <span class="c1"># Uncomment for when not one hot encoding the product code</span>
+<span class="c1">#features = [f for f in train_df.columns if f != &#39;product_code_copy&#39;]</span>
+
+<span class="n">kf</span> <span class="o">=</span> <span class="n">GroupKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># must be 5 because of the 5 product codes</span>
+<span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="p">(</span><span class="n">idx_tr</span><span class="p">,</span> <span class="n">idx_va</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">train_df</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_df</span><span class="o">.</span><span class="n">product_code</span><span class="p">)):</span> <span class="c1">#change product_code_copy and remove copy</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">]</span>
+    <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_va</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx_va</span><span class="p">]</span>
+    <span class="n">bst</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">features</span><span class="p">],</span><span class="n">X_val</span><span class="p">[</span><span class="n">features</span><span class="p">],</span><span class="n">y_train</span><span class="p">,</span><span class="n">y_val</span><span class="p">,</span><span class="n">param</span><span class="p">,</span><span class="n">num_round</span><span class="p">,</span><span class="n">sklearn</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">[</span><span class="n">features</span><span class="p">],</span><span class="n">bst</span><span class="p">,</span><span class="n">to_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">sklearn</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">auprc</span> <span class="o">=</span> <span class="n">average_precision_score</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">auroc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span><span class="n">y_pred</span><span class="o">&gt;=</span><span class="mf">0.3412498</span><span class="p">)</span>
+
+    <span class="n">avg_acc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+    <span class="n">avg_auroc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auroc</span><span class="p">)</span>
+    <span class="n">avg_auprc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auprc</span><span class="p">)</span>
+    <span class="n">avg_f1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f1</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fold &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fold</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: Accuracy is &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. AUPRC is &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">auprc</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. AUROC is &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">auroc</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. F1 is &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Average Accuracy: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">avg_acc</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;. Average AUROC: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">avg_auroc</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;. Average AUPRC: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">avg_auprc</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;. Average F1: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">avg_f1</span><span class="p">),</span><span class="mi">3</span><span class="p">)))</span>  
+</pre></div>
+
+    </div>
+</div>
+</div>
+</p>
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Fold 0: Accuracy is 78.84. AUPRC is 0.2620616480802806. AUROC is 0.5842448015293332. F1 is 0.3430540827147402
+Fold 1: Accuracy is 79.3. AUPRC is 0.25598724281877383. AUROC is 0.5796569103407894. F1 is 0.3488137304391721
+Fold 2: Accuracy is 79.96. AUPRC is 0.24954197225492805. AUROC is 0.5854309810755438. F1 is 0.33403047505228567
+Fold 3: Accuracy is 78.25. AUPRC is 0.27574751603062136. AUROC is 0.5931899730215827. F1 is 0.36689169357205753
+Fold 4: Accuracy is 77.27000000000001. AUPRC is 0.2897262665078796. AUROC is 0.5949059017400531. F1 is 0.381091333527867
+
+
+Average Accuracy: 78.724. Average AUROC: 0.587. Average AUPRC: 0.267. Average F1: 0.355
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Feature importance&#39;}, xlabel=&#39;F score&#39;, ylabel=&#39;Features&#39;&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdMAAAEWCAYAAAA9232qAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8QVMy6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAeyklEQVR4nO3debwddX3/8debRXZBGkA0IGgoaFkiKgbFmFa0ggqiyCIWAiqNraK/SqutloKt1da6tJXW0iKLWsQVsAZEpBE3UggJmxqDEgsxLEFAE5bmhs/vjzPBw+Xe3BPmLufC6/l4nEfmzPc7M5/zzXnknVnOTKoKSZL02G0w0QVIkjTZGaaSJLVkmEqS1JJhKklSS4apJEktGaaSJLVkmEpqLclfJPmPia5Dmijxd6bSxEqyFNgBWNM1+7er6hct1/mWqrqsXXWTT5JTgWlV9aaJrkVPHO6ZSv3hNVW1ZdfrMQfpaEiy0URu/7GarHVr8jNMpT6VZOskZyZZnmRZkr9JsmHT9qwklye5K8mKJJ9Lsk3T9hlgZ+BrSVYm+bMks5LcOmj9S5Mc2EyfmuRLST6b5FfA7HVtf4haT03y2WZ6lySV5PgktyS5O8mcJC9Icl2Se5J8smvZ2Um+l+Sfk9yb5MdJXtbV/rQkFyX5ZZKbkrx10Ha7654D/AVwZPPZr236HZ/kR0l+neRnSf6wax2zktya5N1J7mg+7/Fd7Zsl+WiSnzf1fTfJZk3bjCTfbz7TtUlmPYa/aj0OGKZS/zoHGACmAc8FXgG8pWkL8CHgacCzgZ2AUwGq6g+A/+U3e7t/3+P2DgW+BGwDfG6E7ffihcBuwJHAJ4D3AQcCvwMckeSlg/r+DJgC/BXwlSTbNm3nAbc2n/Vw4G+7w3ZQ3WcCfwuc33z2fZo+dwCvBp4MHA98PMm+Xet4KrA18HTgzcDpSZ7StP0D8DzgRcC2wJ8BDyV5OvB14G+a+ScDX06y3XqMkR4nDFOpP1zQ7N3ck+SCJDsABwHvqqpVVXUH8HHgKICquqmqvllVD1bVncDHgJcOv/qe/KCqLqiqh+iEzrDb79FfV9UDVXUpsAo4r6ruqKplwHfoBPRadwCfqKrVVXU+sBh4VZKdgAOA9zTrWgT8B/AHQ9VdVfcPVUhVfb2qflod3wYuBV7S1WU18IFm+3OBlcDuSTYATgDeWVXLqmpNVX2/qh4E3gTMraq5zba/CVwNHLweY6THCc8vSP3htd0XCyXZD9gYWJ5k7ewNgFua9u2Bf6ITCFs1bXe3rOGWrulnrGv7Pbq9a/r+Id5v2fV+WT3yasif09kTfRrwy6r69aC25w9T95CSHERnj/e36XyOzYHru7rcVVUDXe/va+qbAmwK/HSI1T4DeEOS13TN2xj475Hq0eOPYSr1p1uAB4Epg/6RX+tDQAF7V9VdSV4LfLKrffBl+qvoBAgAzbnPwYcju5cZafuj7elJ0hWoOwMXAb8Atk2yVVeg7gws61p28Gd9xPskmwBfBo4FLqyq1UkuoHOofCQrgAeAZwHXDmq7BfhMVb31UUvpCcfDvFIfqqrldA5FfjTJk5Ns0Fx0tPZQ7lZ0DkXe05y7+9NBq7gdeGbX+58AmyZ5VZKNgfcDm7TY/mjbHjgpycZJ3kDnPPDcqroF+D7woSSbJtmbzjnNz61jXbcDuzSHaAGeROez3gkMNHupr+ilqOaQ96eBjzUXQm2YZP8moD8LvCbJ7zfzN20uZpq6/h9fk51hKvWvY+kEwQ/pHML9ErBj03YasC9wL52LYL4yaNkPAe9vzsGeXFX3An9E53zjMjp7qreybuva/mibT+dipRXAB4HDq+qupu1oYBc6e6lfBf6qOT85nC82f96V5Jpmj/Yk4At0Pscb6ez19upkOoeErwJ+CfwdsEET9IfSuXr4Tjp7qn+K/64+IXnTBkkTKslsOjeYOGCia5EeK/8HJUlSS4apJEkteZhXkqSW3DOVJKklf2f6OLLNNtvUtGnTJrqM9bJq1Sq22GKLiS5jvVjz2Jts9YI1j5exqHnBggUrqqrVbSAN08eRHXbYgauvvnqiy1gv8+bNY9asWRNdxnqx5rE32eoFax4vY1Fzkp+3XYeHeSVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWUlUTXYNGyc7PnFYbHPGPE13Genn3XgN89PqNJrqM9WLNY2+y1QvWPBqWfvhVI/aZN28es2bNGtXtJllQVc9vsw73TCVJaskwlSQ97pxwwglsv/327Lnnng/PO/LII5k+fTrTp09nl112Yfr06UMum+SVSRYnuSnJe3vZnmE6giQrR2k9pyY5uZn+QJIDR2O9kqRHmz17Npdccskj5p1//vksWrSIRYsW8frXv57Xve51j1ouyYbA6cBBwHOAo5M8Z6Tt9c/B8ieQqjplomuQpMezmTNnsnTp0iHbqoovfOELXH755UM17wfcVFU/A0jyeeBQ4Ifr2p57pj1Kx0eS3JDk+iRHNvO3TPKtJNc08w/tWuZ9zaGCy4Ddu+afneTwZnppktO6lt+jmb9dkm828/8tyc+TTBnnjy1Jjzvf+c532GGHHdhtt92Gan46cEvX+1ubeevknmnvXgdMB/YBpgBXJbkCuBM4rKp+1YTdlUkuAvYFjgKeS2ecrwEWDLPuFVW1b5I/Ak4G3gL8FXB5VX0oySuBE4daMMmJa9umTNmOU/YaGJUPO1522KxzReFkYs1jb7LVC9Y8GubNmzdin5UrV/bUD+C2225j1apVj+r/8Y9/nP3222+49WSIeSP+7MUw7d0BwHlVtQa4Pcm3gRcAFwN/m2Qm8BCd/8HsALwE+GpV3QfQBOxwvtL8uYBOaK/d3mEAVXVJkruHWrCqzgDOgM5PY/rpMvde9Nul+b2w5rE32eoFax4NS4+ZNWKf9flpzNKlS9liiy0e0X9gYIAjjzySBQsWMHXq1KEWuxXYqev9VOAXI22rf0ax/w31vxWAY4DtgOdV1eokS4FNm7Zef8T7YPPnGn7zdzLc9iRJj9Fll13GHnvsMVyQAlwF7JZkV2AZnSOMbxxpvZ4z7d0VwJFJNkyyHTAT+B9ga+COJkh/F3hGV//DkmyWZCvgNeu5ve8CRwAkeQXwlNH4EJL0RHD00Uez//77s3jxYqZOncqZZ54JwOc//3mOPvrowd03TjIXoKoGgLcD3wB+BHyhqm4caXvumfbuq8D+wLV09jj/rKpuS/I54GtJrgYWAT8GqKprkpzfzPs58J313N5pwHnNhU7fBpYDvx6FzyFJj3vnnXfekPPPPvvsoWavrqqD176pqrnA3PXZnrcT7FNJNgHWVNVAkv2Bf62q6etaZvfdd6/FixePS32jZSxuDTbWrHnsTbZ6wZrHS7/eTtA90/61M/CFJBsA/we8dYLrkSQNwzDtU1W1hM7PaiRJfc4LkCRJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSWegrTJM9KskkzPSvJSUm2GdPKJEmaJHrdM/0ysCbJNOBMYFfgP8esKkmSJpFew/ShqhoADgM+UVX/D9hx7MqSJGny6DVMVyc5GjgO+K9m3sZjU5IkSZNLr2F6PLA/8MGqujnJrsBnx64sSZImj4166VRVP0zyHmDn5v3NwIfHsjBJkiaLXq/mfQ2wCLikeT89yUVjWJckSZNGr4d5TwX2A+4BqKpFdK7olSTpCa/XMB2oqnsHzavRLkaSpMmop3OmwA1J3ghsmGQ34CTg+2NXliRJk0eve6bvAH4HeJDOzRruBd41RjVJkjSpjLhnmmRD4KKqOhB439iXJEnS5DLinmlVrQHuS7L1ONQjSdKk0+s50weA65N8E1i1dmZVnTQmVUmSNIn0GqZfb17qY/evXsMu751cf03v3muA2SPUvPTDrxqnaiTpsen1DkjnjHUh0nh44IEHmDlzJg8++CADAwMcfvjhnHbaaY/oU1W8853vZO7cuWy++eacffbZ7LvvvhNUsaTJoKcwTXIzQ/yutKqeOeoVSWNok0024fLLL2fLLbdk9erVHHDAARx00EHMmDHj4T4XX3wxS5YsYcmSJcyfP5+3ve1tzJ8/fwKrltTvev1pzPOBFzSvlwD/hDe6H1HzIPUXjdBnZpJrkgwkObxr/u8mWdT1eiDJa8e86Me5JGy55ZYArF69mtWrV5PkEX0uvPBCjj32WJIwY8YM7rnnHpYvXz4R5UqaJHoK06q6q+u1rKo+Afze2JY2upL0en54NM0C1hmmwP8Csxn0sPWq+u+qml5V0+mM9X3ApaNf4hPPmjVrmD59Ottvvz0vf/nLeeELX/iI9mXLlrHTTjs9/H7q1KksW7ZsvMuUNIn0epi3+4TRBnT2VLcaYZld6NwY/7vADOBa4CzgNGB74BjgRuCfgb2aWk6tqgubZT8DbNGs7u1V9f0kOwLnA09u+r+tqr6TZGVVbdls93Dg1VU1O8nZwC+B5wLXJPkX4HRgOzrh9Naq+nHT735gD+AZdB45dxydx87Nr6rZzbpf0dS/CfBT4PiqWplkKXAO8Bo6z3l9A50roOcAa5K8CXhHVX1n8DhV1dJm3Q+tYzgPBy6uqvuGGOcTgRMBpkzZjlP2GljHavrPDpt1LkJal3nz5o36dj/xiU+wcuVK/vIv/5I99tiDXXf9za2mV6xYwcKFCxkY6NR19913s2DBAlauXAnAypUrx6SmsTTZap5s9YI1j5d+rbnXvbWPdk0PADcDR/Sw3DQ6wXIicBXwRuAA4BDgL4AfApdX1QlJtgH+J8llwB3Ay6vqgeb2hefRCfA3At+oqg82N5PYvIcafhs4sKrWJPkWMKeqliR5IfAv/GYP+ynN9CHA14AXA28BrkoyHbgVeH+zrlXNI+n+BPhAs/yKqto3yR8BJ1fVW5J8ClhZVf/QQ53rchTwsaEaquoM4AyAnZ85rT56/UTsgD92795rgJFqXnrMrDHb/oIFC7jrrrs4/vjjH563zz77MGXKFGbN6mx31apVHHLIIey4445AJ9zXtk0Wk63myVYvWPN46deae/2X981V9bPuGc0Dwkdyc1Vd3/S/EfhWVVWS64FdgKnAIUlObvpvSueZqb8APtmE2Bo6gQidQP50ko2BC5qn14zki02QbknnkOsXu86RbdLV72tdtd0+qO61tT4H+F6z/JOAH3Qt/5XmzwXA63qoqyfN3vhewDdGa51PZHfeeScbb7wx22yzDffffz+XXXYZ73nPex7R55BDDuGTn/wkRx11FPPnz2frrbd+OEglaSi9humXgMG/DfgS8LwRlnuwa/qhrvcPNdteA7y+qhZ3L5TkVOB2YB86h5UfAKiqK5LMBF4FfCbJR6rqXB55pfGmg2pYe5OJDYB7mnOQ66q1u87BtX6zqo4eYfk19D6uvTgC+GpVrR7FdT5hLV++nOOOO441a9bw0EMPccQRR/DqV7+aT33qUwDMmTOHgw8+mLlz5zJt2jQ233xzzjrrrAmuWlK/W+c/+kn2oHOD+62TdO9tPZlHh9Zj8Q3gHUne0ewVPreqFgJbA7dW1UNJjgM2bOp5BrCsqv49yRZ0Av5c4PYkzwYWA4cBvx68oar6VZKbk7yhqr6Yzu7l3lV1bY+1XgmcnmRaVd2UZHNgalX9ZB3L/JrOWLVxNPDnLdehxt57783ChQsfNX/OnDkPTyfh9NNPH8+yJE1yI13NuzvwamAbOhfXrH3tC7x1FLb/13Qu2LkuyQ3Ne+icyzwuyZV0DvGu3bucBSxKshB4PfCPzfz3Av8FXA6s6zcMxwBvTnItnYufDu210Kq6k85Vt+cluY5OuO4xwmJfAw5rftrykqE6JHlBklvpnFv+t+aw8tq2XYCdgG/3Wqckafytc8+0qi4ELkyyf1X9YF19h1h2KbBn1/vZw7T94RDLLgH27pr15838c+hcNTu4/5foHHYePH/2oPc3A69cV78R6r6czm9tBy+/S9f01XRCn2avde/B/QctexWd87FDtS0Fnr6u5btttvGGLJ5kt96bN2/emF5gJEnjoddzewuT/DGdQ74PH96tqhPGpCpJkiaRXu+A9BngqcDv0znkOJUhzktqeEneN+iORouS+HxYSXoc6HXPdFpVvSHJoVV1TpL/xJ9qrJeq+iDwwYmuQ5I0+nrdM137s4x7kuxJ52rbXcakIkmSJple90zPSPIU4C+Bi4AtgVPGrCpJkiaRXp9n+h/N5LcBH7smSVKXng7zJtkhyZlJLm7ePyfJm8e2NEmSJodez5meTeeCo6c1738CvGsM6pEkadLpNUynVNUX6NynlqoaoHMPWkmSnvB6DdNVSX6L5obySWYA945ZVZIkTSK9Xs37J3Su4n1Wku/Rebj24WNWlSRJk8hIT43Zuar+t6quSfJSOje+D7DYR4JJktQx0mHeC7qmz6+qG6vqBoNUkqTfGClM0zXt70slSRrCSGFaw0xLkqTGSBcg7ZPkV3T2UDdrpmneV1U9eUyrkyRpEhjp4eAbjlchkiRNVr3+zlSSJA3DMJUkqSXDVJKklgxTSZJaMkwlSWrJMJUkqSXDVJKklgxTSZJaMkwlSWrJMJUkqSXDVJKklgxTSZJaMkwlSWrJMJUkqSXDVJKklgxTSZJaMkwlSWrJMJUkqSXDVJKklgxTSZJaMkwlSWrJMJUkqSXDVJKklgxTSZJaMkwlSWppo4kuQKPn/tVr2OW9X2+9nqUfftUoVCNJTxzumWpMnXDCCWy//fbsueeeQ7ZXFSeddBLTpk1j77335pprrhnnCiWpPcNUY2r27Nlccsklw7bPnz+fJUuWsGTJEs444wze9ra3jWN1kjQ6DNMJlmTDia5hLM2cOZNtt9122Pbvfe97HHvssSRhxowZ3HPPPSxfvnwcK5Sk9gzTMZbkgiQLktyY5MRm3sokH0gyH9g/yZuS/E+SRUn+bW3AJvnXJFc3y542oR9kjKxYsYKddtrp4fdTp05l2bJlE1iRJK0/L0AaeydU1S+TbAZcleTLwBbADVV1SpJnA+8BXlxVq5P8C3AMcC7wvmbZDYFvJdm7qq7rXnkT0CcCTJmyHafsNdC64Hnz5rVeR7fbbruNVatWDbnegYEBFi5cyMBAp+67776bBQsWsHLlylGtYTStXLly1MdorE22midbvWDN46VfazZMx95JSQ5rpncCdgPWAF9u5r0MeB6doAXYDLijaTuiCcuNgB2B5wCPCNOqOgM4A2DnZ06rj17f/q906TGzWq/jEetbupQtttiCWbMevd6nPvWpTJky5eG2VatWccghh7DjjjuOag2jad68eUN+ln422WqebPWCNY+Xfq3Zw7xjKMks4EBg/6raB1gIbAo8UFVr1nYDzqmq6c1r96o6NcmuwMnAy6pqb+DrzbKPKy960Ys499xzqSquvPJKtt56674OUkkainumY2tr4O6qui/JHsCMIfp8C7gwycer6o4k2wJbAU8GVgH3JtkBOAiYN051j5qjjz6aefPmsWLFCqZOncppp53G6tWrAZgzZw4zZszg1ltvZdq0aWy++eacddZZE1yxJK0/w3RsXQLMSXIdsBi4cnCHqvphkvcDlybZAFgN/HFVXZlkIXAj8DPge+NY96g577zz1tmehNNPP32cqpGksWGYjqGqepDOHuVgWw7qdz5w/hDLzx6byiRJo8kwfRzZbOMNWeytACVp3HkBkiRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktSSYSpJUkupqomuQaMkya+BxRNdx3qaAqyY6CLWkzWPvclWL1jzeBmLmp9RVdu1WcFGo1WJ+sLiqnr+RBexPpJcbc1jb7LVPNnqBWseL/1as4d5JUlqyTCVJKklw/Tx5YyJLuAxsObxMdlqnmz1gjWPl76s2QuQJElqyT1TSZJaMkwlSWrJMJ2EkrwyyeIkNyV57xDtSfJPTft1SfadiDq76tkpyX8n+VGSG5O8c4g+s5Lcm2RR8zplImodVNPSJNc39Vw9RHu/jfPuXeO3KMmvkrxrUJ8JHeckn05yR5IbuuZtm+SbSZY0fz5lmGXX+b0f55o/kuTHzd/7V5NsM8yy6/wOjXPNpyZZ1vV3f/Awy/bTOJ/fVe/SJIuGWXZCxvkRqsrXJHoBGwI/BZ4JPAm4FnjOoD4HAxcDAWYA8ye45h2BfZvprYCfDFHzLOC/Jnp8B9W0FJiyjva+Guchvie30fkxet+MMzAT2Be4oWve3wPvbabfC/zdMJ9nnd/7ca75FcBGzfTfDVVzL9+hca75VODkHr43fTPOg9o/CpzST+Pc/XLPdPLZD7ipqn5WVf8HfB44dFCfQ4Fzq+NKYJskO453oWtV1fKquqaZ/jXwI+DpE1XPKOqrcR7kZcBPq+rnE11It6q6AvjloNmHAuc00+cArx1i0V6+92NiqJqr6tKqGmjeXglMHY9aejXMOPeir8Z5rSQBjgDOG49aHgvDdPJ5OnBL1/tbeXQw9dJnQiTZBXguMH+I5v2TXJvk4iS/M76VDamAS5MsSHLiEO19O87AUQz/D0+/jfMOVbUcOv/xArYfok8/j/UJdI5QDGWk79B4e3tzaPrTwxxO79dxfglwe1UtGaZ9wsfZMJ18MsS8wb9v6qXPuEuyJfBl4F1V9atBzdfQOSS5D/DPwAXjXN5QXlxV+wIHAX+cZOag9n4d5ycBhwBfHKK5H8e5F/061u8DBoDPDdNlpO/QePpX4FnAdGA5ncOmg/XlOANHs+690gkfZ8N08rkV2Knr/VTgF4+hz7hKsjGdIP1cVX1lcHtV/aqqVjbTc4GNk0wZ5zIH1/SL5s87gK/SOQTWre/GuXEQcE1V3T64oR/HGbh97eHx5s87hujTd2Od5Djg1cAx1Zy4G6yH79C4qarbq2pNVT0E/PswtfTjOG8EvA44f7g+/TDOhunkcxWwW5Jdmz2Qo4CLBvW5CDi2udp0BnDv2sNoE6E533Em8KOq+tgwfZ7a9CPJfnS+m3eNX5WPqmeLJFutnaZzwckNg7r11Th3GfZ/8f02zo2LgOOa6eOAC4fo08v3ftwkeSXwHuCQqrpvmD69fIfGzaDz+YcNU0tfjXPjQODHVXXrUI19M84TefWTr8f2onMV6U/oXHX3vmbeHGBOMx3g9Kb9euD5E1zvAXQOFV0HLGpeBw+q+e3AjXSuHrwSeNEE1/zMppZrm7r6fpybmjanE45bd83rm3GmE/LLgdV09oLeDPwW8C1gSfPntk3fpwFzu5Z91Pd+Amu+ic65xbXf508Nrnm479AE1vyZ5nt6HZ2A3LHfx7mZf/ba729X374Y5+6XtxOUJKklD/NKktSSYSpJUkuGqSRJLRmmkiS1ZJhKktTSRhNdgKT+l2QNnZ9VrPXaqlo6QeVIfcefxkgaUZKVVbXlOG5vo/rNjeSlvudhXkmtJdkxyRXN8yRvSPKSZv4rk1zT3Fj/W828bZNc0Nxw/cokezfzT01yRpJLgXOTbJfky0mual4vnsCPKK2Th3kl9WKzrgcz31xVhw1qfyPwjar6YJINgc2TbEfnHrAzq+rmJNs2fU8DFlbVa5P8HnAunZuvAzwPOKCq7k/yn8DHq+q7SXYGvgE8e8w+odSCYSqpF/dX1fR1tF8FfLp5oMEFVbUoySzgiqq6GaCq1j6r8gDg9c28y5P8VpKtm7aLqur+ZvpA4DnNrYQBnpxkq+o8E1fqK4appNaq6ormsVevAj6T5CPAPQz9+K51PeZrVde8DYD9u8JV6lueM5XUWpJnAHdU1b/TeULQvsAPgJcm2bXps/Yw7xXAMc28WcCKevTzbQEupXNj/rXbmD5G5UutuWcqaTTMAv40yWpgJXBsVd2Z5ETgK0k2oPOc0pcDpwJnJbkOuI/fPH5tsJOA05t+G9EJ4Tlj+imkx8ifxkiS1JKHeSVJaskwlSSpJcNUkqSWDFNJkloyTCVJaskwlSSpJcNUkqSW/j8oHxNtmJI+5gAAAABJRU5ErkJggg==" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once we have an accuracy we are happy with, let's train our model on the entirety of our training dataset. Here, we disregard the validation datasets.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p><div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bst</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="n">features</span><span class="p">],[],</span><span class="n">y</span><span class="p">,[],</span><span class="n">param</span><span class="p">,</span><span class="n">num_round</span><span class="p">,</span><span class="n">doVal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+</p>
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sub</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">ids</span><span class="p">,</span> <span class="s1">&#39;failure&#39;</span><span class="p">:</span><span class="n">preds</span><span class="p">})</span>
+<span class="n">sub</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;submission.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="rtavasso1/Kaggle"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/Kaggle/fastpages/jupyter/2022/08/30/Tabular-Classification.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/Kaggle/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/Kaggle/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/Kaggle/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" target="_blank" title="fastai"><svg class="svg-icon grey"><use xlink:href="/Kaggle/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" target="_blank" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/Kaggle/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
