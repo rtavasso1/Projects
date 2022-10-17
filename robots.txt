@@ -1,1 +1,1 @@
-Sitemap: https://rtavasso1.github.io/Kaggle/sitemap.xml
+Sitemap: https://rtavasso1.github.io/Projects/sitemap.xml
