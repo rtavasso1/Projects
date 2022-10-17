@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Title | Riley Tavassoli</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://rtavasso1.github.io/Kaggle/2022/10/17/Example-Research-Code-for-Classification.html" />
+<meta property="og:url" content="https://rtavasso1.github.io/Kaggle/2022/10/17/Example-Research-Code-for-Classification.html" />
+<meta property="og:site_name" content="Riley Tavassoli" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-10-17T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Title" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-10-17T00:00:00-05:00","datePublished":"2022-10-17T00:00:00-05:00","headline":"Title","mainEntityOfPage":{"@type":"WebPage","@id":"https://rtavasso1.github.io/Kaggle/2022/10/17/Example-Research-Code-for-Classification.html"},"url":"https://rtavasso1.github.io/Kaggle/2022/10/17/Example-Research-Code-for-Classification.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/Kaggle/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://rtavasso1.github.io/Kaggle/feed.xml" title="Riley Tavassoli" /><link rel="shortcut icon" type="image/x-icon" href="/Kaggle/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/Kaggle/">Riley Tavassoli</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/Kaggle/about/">About Me</a><a class="page-link" href="/Kaggle/search/">Search</a><a class="page-link" href="/Kaggle/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-10-17T00:00:00-05:00" itemprop="datePublished">
+        Oct 17, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/rtavasso1/Kaggle/tree/master/_notebooks/2022-10-17-Example-Research-Code-for-Classification.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/Kaggle/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-10-17-Example-Research-Code-for-Classification.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">pyts.multivariate.transformation</span> <span class="kn">import</span> <span class="n">WEASELMUSE</span><span class="p">,</span> <span class="n">MultivariateTransformer</span>
+<span class="kn">from</span> <span class="nn">pyts.transformation</span> <span class="kn">import</span> <span class="n">WEASEL</span>
+<span class="kn">from</span> <span class="nn">pyts.image</span> <span class="kn">import</span> <span class="n">GramianAngularField</span>
+<span class="kn">from</span> <span class="nn">pyts.multivariate.image</span> <span class="kn">import</span> <span class="n">JointRecurrencePlot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+<span class="kn">import</span> <span class="nn">shap</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">graphs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">sans</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span> <span class="c1"># pass graphs and sans args as strings with file or column respectively</span>
+    <span class="n">X2</span><span class="p">,</span> <span class="n">X3</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span><span class="n">X</span>
+    
+    <span class="n">confusion2</span><span class="p">,</span> <span class="n">confusion3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+    <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span> <span class="o">=</span> <span class="p">[],[]</span>
+
+    <span class="n">n_iters</span><span class="o">=</span><span class="mi">5</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+        <span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#maintains class balance in folds for 2 class case</span>
+        <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+            <span class="n">transformer1</span> <span class="o">=</span> <span class="n">WEASELMUSE</span><span class="p">(</span><span class="n">word_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">window_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">36</span><span class="p">],</span> <span class="n">chi2_threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">)</span>
+            
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X2</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X2</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y2</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y2</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="c1">#print(X2.shape,X_train.shape)</span>
+
+            <span class="n">transformer1</span> <span class="o">=</span> <span class="n">transformer1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">transformer1</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="n">clf2</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;newton-cg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">transformer1</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+            <span class="n">confusion2</span> <span class="o">+=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+            <span class="n">scores2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf2</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+        
+        <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X3</span><span class="p">,</span> <span class="n">y3</span><span class="p">):</span>
+            <span class="n">transformer2</span> <span class="o">=</span> <span class="n">WEASELMUSE</span><span class="p">(</span><span class="n">word_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">window_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">36</span><span class="p">],</span> <span class="n">chi2_threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">)</span> 
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X3</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X3</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y3</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y3</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="n">transformer2</span> <span class="o">=</span> <span class="n">transformer2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span> <span class="c1"># Fit the transformer</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">transformer2</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="c1"># Transform the training set</span>
+            <span class="n">clf3</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;newton-cg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span> <span class="c1"># Fit the classifier</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">transformer2</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="c1"># Transform the test set</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf3</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="c1"># Predict the test set labels</span>
+            <span class="n">confusion3</span> <span class="o">+=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+            <span class="n">scores3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf3</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span> <span class="c1"># Append accuracy</span>
+
+           
+
+
+        <span class="c1">#explainer = shap.KernelExplainer(clf3.predict_proba, X_train, link=&quot;logit&quot;)</span>
+        <span class="c1">#shap_values = explainer.shap_values(X_test, nsamples=100, l1_reg=&quot;num_features(13)&quot;)</span>
+        <span class="c1">#shap.force_plot(explainer.expected_value[0], shap_values[0][0,:], X_test[0,:], link=&quot;logit&quot;)</span>
+    
+    <span class="k">if</span> <span class="n">sans</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2 Class Accuracy without </span><span class="si">{</span><span class="n">sans</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3 Class Accuracy without </span><span class="si">{</span><span class="n">sans</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores3</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2 Class Accuracy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;3 Class Accuracy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores3</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">graphs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">graphs</span><span class="o">==</span><span class="s1">&#39;6688&#39;</span><span class="p">:</span>
+            <span class="n">labels1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;6x6 and 8x8&#39;</span><span class="p">]</span>
+            <span class="n">labels2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;6x6&#39;</span><span class="p">,</span><span class="s1">&#39;8x8&#39;</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;6688&#39;</span>
+        <span class="k">elif</span> <span class="n">graphs</span><span class="o">==</span><span class="s1">&#39;all&#39;</span><span class="p">:</span>
+            <span class="n">labels1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;All Sizes&#39;</span><span class="p">]</span>
+            <span class="n">labels2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;4x4 and 5x5&#39;</span><span class="p">,</span><span class="s1">&#39;6x6 and 8x8&#39;</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">labels1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;4x4 and 5x5&#39;</span><span class="p">]</span>
+            <span class="n">labels2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Undistracted&#39;</span><span class="p">,</span><span class="s1">&#39;4x4&#39;</span><span class="p">,</span><span class="s1">&#39;5x5&#39;</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;4455&#39;</span>
+        <span class="n">disp2</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">confusion2</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">labels1</span><span class="p">)</span>
+        <span class="n">disp3</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">confusion3</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">labels2</span><span class="p">)</span>
+        <span class="n">disp2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+        <span class="c1">#plt.title(col)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;HistPlots/2by2Confusion&#39;</span><span class="o">+</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">disp3</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+        <span class="c1">#plt.title(col)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;HistPlots/3by3Confusion&#39;</span><span class="o">+</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">scores3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">singleCol</span><span class="p">(</span><span class="n">bigDis</span><span class="p">,</span><span class="n">graphs</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="n">i</span><span class="p">,:],</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span><span class="n">graphs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">bigDis</span><span class="o">=</span><span class="n">bigDis</span><span class="p">)</span>
+        <span class="n">scores2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score2</span><span class="p">)</span>
+        <span class="n">scores3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">graphs</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">scores2</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">scores2</span><span class="o">.</span><span class="n">sort</span><span class="p">())</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;SingleFeature/2 Class Feature Importance&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">scores3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">scores3</span><span class="o">.</span><span class="n">sort</span><span class="p">())</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;SingleFeature/3 Class Feature Importance&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">pairCols</span><span class="p">(</span><span class="n">bigDis</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">col2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">j</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">col2</span>
+            <span class="n">X_pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X</span><span class="p">[:,</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numSamples</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">X</span><span class="p">[:,</span><span class="n">j</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">numSamples</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X_pair</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span><span class="n">graphs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">bigDis</span><span class="o">=</span><span class="n">bigDis</span><span class="p">)</span>
+            <span class="n">scores2</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">score2</span>
+            <span class="n">scores3</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">score3</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sansCol</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">X_sans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X_sans</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">sans</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">scores2</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">score2</span><span class="c1">#-scores2All</span>
+        <span class="n">scores3</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">score3</span><span class="c1">#-scores3All</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sansPairCols</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">col2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">j</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">col2</span>
+            <span class="n">X_sans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">X_sans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">X_sans</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X_sans</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">sans</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+            <span class="n">scores2</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">score2</span><span class="c1">#-scores2All</span>
+            <span class="n">scores3</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">score3</span><span class="c1">#-scores3All</span>
+    <span class="n">scores2</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores2</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="n">scores3</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores3</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">modal</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1">#df = pd.DataFrame(X.reshape(-1,12), columns=columns)</span>
+    <span class="n">Bio</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Openness&#39;</span><span class="p">,</span><span class="s1">&#39;PupilL&#39;</span><span class="p">,</span><span class="s1">&#39;PupilR&#39;</span><span class="p">,</span><span class="s1">&#39;Objects_numeric&#39;</span><span class="p">,</span><span class="s1">&#39;gsr_phasic&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span>
+    <span class="c1">#Bio = df[[&#39;Openness&#39;,&#39;PupilL&#39;,&#39;PupilR&#39;,&#39;Objects_numeric&#39;]].values.reshape(-1,4,475) # uncomment for no gsr</span>
+    <span class="n">Kinematic</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Accel&#39;</span><span class="p">,</span><span class="s1">&#39;Brake&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Steering&#39;</span><span class="p">,</span><span class="s1">&#39;Throttle&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span>
+    <span class="n">Enviro</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Center&#39;</span><span class="p">,</span><span class="s1">&#39;Front&#39;</span><span class="p">,</span><span class="s1">&#39;Back&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[[</span><span class="s1">&#39;Bio&#39;</span><span class="p">,</span><span class="n">Bio</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Kinematic&#39;</span><span class="p">,</span><span class="n">Kinematic</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Enviro&#39;</span><span class="p">,</span><span class="n">Enviro</span><span class="p">]]:</span>
+        <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+        <span class="n">scores2</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">score2</span><span class="c1">#-scores2All</span>
+        <span class="n">scores3</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">score3</span><span class="c1">#-scores3All</span>
+    
+    <span class="n">scores2</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores2</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="n">scores3</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores3</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">modalPair</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">scores2</span><span class="p">,</span><span class="n">scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="c1">#df = pd.DataFrame(X.reshape(-1,13), columns=columns)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1">#Bio = df[[&#39;Openness&#39;,&#39;PupilL&#39;,&#39;PupilR&#39;,&#39;Objects_numeric&#39;,&#39;gsr_phasic&#39;]].values.reshape(-1,5,475)</span>
+    <span class="n">Bio</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Openness&#39;</span><span class="p">,</span><span class="s1">&#39;PupilL&#39;</span><span class="p">,</span><span class="s1">&#39;PupilR&#39;</span><span class="p">,</span><span class="s1">&#39;Objects_numeric&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span> <span class="c1"># uncomment for no gsr</span>
+    <span class="n">Kinematic</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Accel&#39;</span><span class="p">,</span><span class="s1">&#39;Brake&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Steering&#39;</span><span class="p">,</span><span class="s1">&#39;Throttle&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span>
+    <span class="n">Enviro</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Center&#39;</span><span class="p">,</span><span class="s1">&#39;Front&#39;</span><span class="p">,</span><span class="s1">&#39;Back&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">475</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[[</span><span class="s1">&#39;Bio&#39;</span><span class="p">,</span><span class="n">Bio</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Kinematic&#39;</span><span class="p">,</span><span class="n">Kinematic</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Enviro&#39;</span><span class="p">,</span><span class="n">Enviro</span><span class="p">]]:</span>
+        <span class="n">score2</span><span class="p">,</span> <span class="n">score3</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+        <span class="n">scores2</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">score2</span><span class="c1">#-scores2All</span>
+        <span class="n">scores3</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">score3</span><span class="c1">#-scores3All</span>
+    
+    <span class="n">scores2</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores2</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="n">scores3</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores3</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="k">return</span> <span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">loadData</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">new</span><span class="p">:</span>
+        <span class="n">X4455</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;newdata4455.csv&#39;</span><span class="p">)</span>
+        <span class="n">X6688</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;newdata6688.csv&#39;</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X4455</span><span class="p">,</span><span class="n">X6688</span><span class="p">])</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">y3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">y3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">y3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y3</span><span class="p">)</span>
+        <span class="n">State</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">)</span>
+
+        <span class="n">y2_small</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y3_small</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">y2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y2_small</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">y2_small</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">num</span><span class="p">:</span>
+                <span class="n">y2_small</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">y3</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y3_small</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">y3_small</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">num</span><span class="p">:</span>
+                <span class="n">y3_small</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">y2_small</span><span class="p">,</span><span class="n">y3_small</span><span class="p">,</span><span class="n">State</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;4455&#39;</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data.npy&#39;</span><span class="p">,</span><span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">numSamples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="o">//</span><span class="mi">3</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;6688&#39;</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data6688.npy&#39;</span><span class="p">,</span><span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">numSamples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="o">//</span><span class="mi">3</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data.npy&#39;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;data6688.npy&#39;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span><span class="n">X2</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">numSamples</span> <span class="o">=</span> <span class="p">[</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">X2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">numSamples</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">numSamples</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">meanAccuracy</span><span class="p">(</span><span class="n">resultDict</span><span class="p">,</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">meanAcc</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">meanAcc</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">resultDict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">meanAcc</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">meanAcc</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">meanAcc</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+    <span class="n">meanAcc</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">meanAcc</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+    <span class="k">return</span> <span class="n">meanAcc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Accel&#39;</span><span class="p">,</span><span class="s1">&#39;Brake&#39;</span><span class="p">,</span><span class="s1">&#39;Openness&#39;</span><span class="p">,</span><span class="s1">&#39;PupilL&#39;</span><span class="p">,</span><span class="s1">&#39;PupilR&#39;</span><span class="p">,</span><span class="s1">&#39;Speed&#39;</span><span class="p">,</span><span class="s1">&#39;Steering&#39;</span><span class="p">,</span><span class="s1">&#39;Throttle&#39;</span><span class="p">,</span><span class="s1">&#39;Center&#39;</span><span class="p">,</span><span class="s1">&#39;Front&#39;</span><span class="p">,</span><span class="s1">&#39;Back&#39;</span><span class="p">,</span><span class="s1">&#39;Objects_numeric&#39;</span> <span class="p">,</span><span class="s1">&#39;gsr_phasic&#39;</span><span class="p">]</span> <span class="c1"># Testing without gsr_phasic</span>
+<span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;4455&#39;</span><span class="p">,</span><span class="s1">&#39;6688&#39;</span><span class="p">,</span><span class="s1">&#39;all&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dict_scores2</span><span class="p">,</span> <span class="n">dict_scores3</span> <span class="o">=</span> <span class="p">{},{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1"># remove gsr_phasic</span>
+    <span class="n">scores2All</span><span class="p">,</span> <span class="n">scores3All</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+    <span class="n">dict_scores2</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores2All</span>
+    <span class="n">dict_scores3</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores3All</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dict_scores2Sans</span><span class="p">,</span> <span class="n">dict_scores3Sans</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1">#X = X[:,:-1,:] # remove gsr_phasic</span>
+    <span class="n">scores2All</span><span class="p">,</span> <span class="n">scores3All</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+    <span class="n">scores2Sans</span><span class="p">,</span> <span class="n">scores3Sans</span> <span class="o">=</span> <span class="n">sansCol</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span> <span class="c1"># Lower number means feature is more important, number &gt; 0 means feature is noise that is decreasing accuracy</span>
+    <span class="n">dict_scores2Sans</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanAccuracy</span><span class="p">(</span><span class="n">scores2Sans</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">dict_scores3Sans</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanAccuracy</span><span class="p">(</span><span class="n">scores3Sans</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dict_scores2SansPair</span><span class="p">,</span> <span class="n">dict_scores3SansPair</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1">#X = X[:,:-1,:] # remove gsr_phasic</span>
+    <span class="n">scores2All</span><span class="p">,</span> <span class="n">scores3All</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+    <span class="n">scores2SansPair</span><span class="p">,</span> <span class="n">scores3SansPair</span> <span class="o">=</span> <span class="n">sansPairCols</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">dict_scores2SansPair</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanAccuracy</span><span class="p">(</span><span class="n">scores2SansPair</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">dict_scores3SansPair</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanAccuracy</span><span class="p">(</span><span class="n">scores3SansPair</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dict_scores2Modal</span><span class="p">,</span> <span class="n">dict_scores3Modal</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="k">continue</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">loadData</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="n">new</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1">#X = X[:,:-1,:] # remove gsr_phasic</span>
+    <span class="n">scores2All</span><span class="p">,</span> <span class="n">scores3All</span> <span class="o">=</span> <span class="n">trainScore</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">)</span>
+    <span class="n">scores2Modal</span><span class="p">,</span> <span class="n">scores3Modal</span> <span class="o">=</span> <span class="n">modal</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">scores2All</span><span class="p">,</span><span class="n">scores3All</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">dict_scores2Modal</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores2Modal</span> <span class="c1"># lower number means modality has lower accuracy than combined dataset</span>
+    <span class="n">dict_scores3Modal</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores3Modal</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span> <span class="o">=</span> <span class="n">singleCol</span><span class="p">(</span><span class="n">bigDis</span><span class="o">=</span><span class="n">file</span><span class="p">,</span><span class="n">graphs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">scores2</span><span class="p">,</span> <span class="n">scores3</span> <span class="o">=</span> <span class="n">pairCols</span><span class="p">(</span><span class="n">bigDis</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2Sans.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores2Sans</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3Sans.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores3Sans</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2SansPair.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores2SansPair</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3SansPair.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores3SansPair</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2Modal.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores2Modal</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3Modal.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dict_scores3Modal</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">trailing</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;nogsr.pkl&quot;</span><span class="p">,</span><span class="s2">&quot;gsr.pkl&quot;</span><span class="p">]</span>
+<span class="n">trailing</span> <span class="o">=</span> <span class="n">trailing</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2Sans_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores2Sans</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3Sans_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores3Sans</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2SansPair_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores2SansPair</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3SansPair_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores3SansPair</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores2Modal_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores2Modal</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;dict_scores3Modal_NEW_&#39;</span><span class="o">+</span><span class="n">trailing</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_scores3Modal</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><a class="u-url" href="/Kaggle/2022/10/17/Example-Research-Code-for-Classification.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/Kaggle/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/Kaggle/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/Kaggle/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" target="_blank" title="fastai"><svg class="svg-icon grey"><use xlink:href="/Kaggle/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" target="_blank" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/Kaggle/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
